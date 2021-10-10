@@ -194,21 +194,24 @@ class InAppUpdatePlugin : FlutterPlugin, MethodCallHandler,
     }
 
     private fun checkForUpdate(result: Result) {
+        print("************************** 1")
         requireNotNull(activityProvider?.activity()) {
             result.error("in_app_update requires a foreground activity", null, null)
         }
-
+        print("************************** 2")    
         activityProvider?.addActivityResultListener(this)
+        print("************************** 3")
         activityProvider?.activity()?.application?.registerActivityLifecycleCallbacks(this)
-
+        print("************************** 4")
         appUpdateManager = AppUpdateManagerFactory.create(activityProvider?.activity())
-
+        print("************************** 5")
         // Returns an intent object that you use to check for an update.
         val appUpdateInfoTask = appUpdateManager!!.appUpdateInfo
-
+        print("************************** 6")
         // Checks that the platform will allow the specified type of update.
         appUpdateInfoTask.addOnSuccessListener { info ->
             appUpdateInfo = info
+            print("************************** 7")
             result.success(
                   mapOf(
                     "updateAvailability" to info.updateAvailability(),
@@ -223,6 +226,7 @@ class InAppUpdatePlugin : FlutterPlugin, MethodCallHandler,
             )
         }
         appUpdateInfoTask.addOnFailureListener {
+            print("************************** 8")
             result.error(it.message, null, null)
         }
     }
